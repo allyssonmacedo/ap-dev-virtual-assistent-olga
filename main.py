@@ -1,3 +1,4 @@
+from tracemalloc import take_snapshot
 import settings #set the configuration of Olga such like languages and other settings
 from gettext import translation
 import pyttsx3 #pip install pyttsx3 (lib to speaking)
@@ -30,6 +31,7 @@ engine.setProperty('voice', voices[0].id)
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
+
 def time_():
     Time=datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
     #Time=datetime.datetime.now().strftime("%I:%M:%S") #12h
@@ -63,9 +65,9 @@ def TakeCommand():
         audio = r.listen(source)  #start the speech recognition 
     try:
         print("Reconhecendo...")
-        query = r.recognize_google(audio, language= settings.portuguese) #set the language of the recognition and use the google speech recognize
+        query = r.recognize_google(audio, language= settings.portuguese).lower() #set the language of the recognition and use the google speech recognize
         if "olga" in query.lower():
-           query = replace("olga", "")   #drop the word "Olga" from the query
+            query = query.replace("olga", "")   #drop the word "olga" from the query
         print(query)
         
     except Exception as e:
@@ -101,29 +103,32 @@ def jokes():
 def Introduction():
     speak('Eu sou a Olga, sua assistente com inteligência artificial...')
     speak('Fui projetada para otimizar as suas tarefas....')
-    speak('Deseja saber o que eu sou capaz de fazer?..')
-    
-if __name__ == '__main__':
+    speak('Deseja saber o que eu sou capaz de fazer?...')
 
+
+if __name__ == '__main__':
     clear = lambda: os.system('cls') # Clean the commands before the execution 
     clear()
     wishme()
-    
-    while True:
-        query = TakeCommand().lower()
-        # comandos convertidos em minúsculas
 
-        if 'horas' in query:
+    while True:
+        query = TakeCommand()
+
+        if "que horas são" in query:
             time_()
-        elif 'que dia é hoje' in query:
+        elif "que dia é hoje" in query:
             date()
-        elif 'como você está' in query:
+        elif "ta aí" in query:
+            speak('A seu dispor, senhor')
+        elif "parabéns" in query:
+            speak('Oi Laís, tudo bem?..... Eu sou a Olga... assistente virtual do Allysson ... e vim te desejar um feliz aniversário.... cheio de muita paz, saúde e muitas felicidades.... O Allysson não para de falar de você.... você deve ser muito especial para ele... Vou pedir uma reserva hoje a noite para você naquele lugar especial.... ra.ra.ra. ... Beijos')
+        elif "como você está" in query:
             speak('Eu estou bem senhor, obrigado por perguntar.')
             speak('E o senhor?')
             ans = (TakeCommand().lower())
             if 'bom' in query or "ótimo" in ans: 
                 speak('Que bom, senhor. Espero que continue assim')
-            else:
+            elif ["mau", "mal", "mais ou menos", ""] in query:
                 speak('O que aconteceu?')
                 ans = (TakeCommand().lower())
                 if 'nada' in ans:
@@ -356,4 +361,4 @@ if __name__ == '__main__':
 
 #Transformar em executável .exe
 #abrir o diretório 
-#pyinstaller --onefile 'olga.py'S
+#pyinstaller --onefile 'olga.py'S  
