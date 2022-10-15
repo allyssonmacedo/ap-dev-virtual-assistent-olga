@@ -20,6 +20,7 @@ from urllib.request import urlopen
 import requests
 import pywhatkit as kit
 from googletrans import Translator #pip install googletrans==4.0.0-rc1
+import functions
 #from contacts import contact (para importar contatos)
 
 #Configuration and initializing 
@@ -137,8 +138,8 @@ if __name__ == '__main__':
             time_()
         elif "que dia é hoje" in query:
             date()
-        elif "ta aí" in query:
-            speak('A seu dispor, senhor')
+        elif "tá aí" in query:
+            speak('A seu dispor senhor')
         elif "como você está" in query:
             speak('Eu estou bem senhor, obrigado por perguntar.')
             speak('E o senhor?')
