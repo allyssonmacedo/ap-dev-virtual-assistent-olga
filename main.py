@@ -1,145 +1,34 @@
-from tracemalloc import take_snapshot
-import settings #set the configuration of Olga such like languages and other settings
-from gettext import translation
-import pyttsx3 #pip install pyttsx3 (lib to speaking)
-import datetime #lib to get the time of the OS
-import speech_recognition as sr #pip install SpeechRecognition
-import wikipedia #pip install wikipedia  
-#import smtplib
-import webbrowser as wb
-import os
-import pyautogui #pip install pyautogui (Para Screenshot)
-import psutil #pip install pustil
-import pyjokes #pip install pyjokes (Para piadas)
-import random
-import operator
-import json
-#import wolframalpha
-import time
-from urllib.request import urlopen
-import requests
-import pywhatkit as kit
-from googletrans import Translator #pip install googletrans==4.0.0-rc1
-#from contacts import contact (para importar contatos)
+import libraries.py #libraries
+import settings.py #set the configuration of Olga such like languages and other settings
+import functions.py  #importing Olga's functions
+import phrases.py #importing Phrases of Olga
 
 #Configuration and initializing 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 
-#Functions of Olga:
-def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
-
-def time_():
-    Time=datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
-    #Time=datetime.datetime.now().strftime("%I:%M:%S") #12h
-    speak('São {}'.format(Time))
-
-def date():
-    year = (datetime.datetime.now().year)
-    month = (datetime.datetime.now().month)
-    date = (datetime.datetime.now().day)
-    speak('São {} do {} de {}'.format(date, month, year))
-
-def wishme():
-    #speak('Bem-vindo de volta Senhor!')
-    hour = datetime.datetime.now().hour
-    if hour >=6 and hour<12:
-        speak("Bom dia. Como está se sentindo hoje?")
-    elif hour >=12 and hour<18:
-        speak("Boa tarde. Como está se sentindo hoje?")
-    else:
-        speak("Boa noite. Como está se sentindo hoje?")
-    time_()
-    date()
-    speak("Olga a seu serviço. Como posso lhe ajudar?")
-
-def TakeCommand():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Escutando...")
-        r.adjust_for_ambient_noise(source) #noise reduction
-        r.pause_threshold = 0.5 #set the time of waiting for the answer until the recognition of the command
-        audio = r.listen(source)  #start the speech recognition 
-    try:
-        print("Reconhecendo...")
-        query = r.recognize_google(audio, language= settings.portuguese).lower() #set the language of the recognition and use the google speech recognize
-        if "olga" in query.lower():
-            query = query.replace("olga", "")   #drop the word "olga" from the query
-        print(query)
-        
-    except Exception as e:
-        print(e)
-        return "None"
-    return query
-
-def Answer():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Aguardando resposta")
-        r.adjust_for_ambient_noise(source) #noise reduction
-        r.pause_threshold = 0.5 #set the time of waiting for the answer until the recognition of the command
-        audio = r.listen(source)  #start the speech recognition 
-    try:
-        print("Identificando")
-        query = r.recognize_google(audio, language= settings.portuguese).lower() #set the language of the recognition and use the google speech recognize 
-        if "olga" in query.lower():
-            query = query.replace("olga", "")   #drop the word "olga" from the query
-        print(query)
-        
-    except Exception as e:
-        print(e)
-        return "None"
-    return query
-
-def sendEmail(to, content):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.ehlo()
-    server.starttls()
-    # the email has to be with low security level
-    server.login(settings.your_email, settings.your_password) #configuration of the login and password
-    server.sendmail(settings.your_email, to, content) #configuration of the message of the receiver and the content of the message
-    server.close()
-
-def screenshot():
-    img = pyautogui.screenshot()
-    img.save(settings.save_image) #set the path of the image
-
-def cpu():
-    usage = str(psutil.cpu_percent())
-    speak('O uso da CPU está em'+ usage)
-
-def jokes():
-    joke_en = pyjokes.get_joke() #get a random joke
-    print(joke_en) #print the joke on terminal
-    trans = Translator() 
-    joke_pt = trans.translate(joke_en, dest='pt').text  #translate the joke to portuguese
-    print(joke_pt)
-    speak(joke_pt)
-
-def Introduction():
-    speak('Eu sou a Olga, sua assistente com inteligência artificial...')
-    speak('Fui projetada para otimizar as suas tarefas....')
-    speak('Deseja saber o que eu sou capaz de fazer?...')
-
-
 if __name__ == '__main__':
     clear = lambda: os.system('cls') # Clean the commands before the execution 
     clear()
-    wishme()
+    functions.speak(
+        functions.wishme(), functions.get_date(), functions.get_time(), phrases.olga_help
+    )
+
 
     while True:
-        query = TakeCommand()
+        audio = TakeCommand()
 
-        if "que horas são" in query:
-            time_()
-        elif "que dia é hoje" in query:
-            date()
-        elif "ta aí" in query:
-            speak('A seu dispor, senhor')
-        elif "como você está" in query:
+        if "que horas são" in audio:
+            functions.speak( functions.get_time() )
+
+        elif "que dia é hoje" in audio:
+            functions.speak( functions.date() )
+
+        elif "tá aí" in audio:
+            speak('A seu dispor senhor')
+
+        elif "como você está" in audio:
             speak('Eu estou bem senhor, obrigado por perguntar.')
             speak('E o senhor?')
             ans = (TakeCommand().lower())
@@ -158,6 +47,7 @@ if __name__ == '__main__':
                 else:
                     speak('Nossa, lamento ouvir isso, senhor')
                     speak('Em que posso ser útil agora?')
+                    
         elif 'wikipedia' in query:
             speak("É pra já, senhor...")
             query = query.replace("wikipedia","")

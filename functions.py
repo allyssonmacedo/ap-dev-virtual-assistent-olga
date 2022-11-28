@@ -3,30 +3,6 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-def time_():
-    Time=datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
-    #Time=datetime.datetime.now().strftime("%I:%M:%S") #12h
-    speak('São {}'.format(Time))
-
-def date():
-    year = (datetime.datetime.now().year)
-    month = (datetime.datetime.now().month)
-    date = (datetime.datetime.now().day)
-    speak('São {} do {} de {}'.format(date, month, year))
-
-def wishme():
-    #speak('Bem-vindo de volta Senhor!')
-    hour = datetime.datetime.now().hour
-    if hour >=6 and hour<12:
-        speak("Bom dia. Como está se sentindo hoje?")
-    elif hour >=12 and hour<18:
-        speak("Boa tarde. Como está se sentindo hoje?")
-    else:
-        speak("Boa noite. Como está se sentindo hoje?")
-    time_()
-    date()
-    speak("Olga a seu serviço. Como posso lhe ajudar?")
-
 def TakeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -45,6 +21,54 @@ def TakeCommand():
         print(e)
         return "None"
     return query
+
+def get_time():
+    Time = datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
+    #Time=datetime.datetime.now().strftime("%I:%M:%S") #12h
+    return ('São {}'.format(Time))
+
+def get_date():
+    year = (datetime.datetime.now().year)
+    month = (datetime.datetime.now().month)
+    date = (datetime.datetime.now().day)
+    return ('São {} do {} de {}'.format(date, month, year))
+
+def wishme():
+    #speak('Bem-vindo de volta Senhor!')
+    hour = datetime.datetime.now().hour
+    if hour >=6 and hour<12:
+        return ("Bom dia. Como está se sentindo hoje?")
+    elif hour >=12 and hour<18:
+        return ("Boa tarde. Como está se sentindo hoje?")
+    else:
+        return ("Boa noite. Como está se sentindo hoje?",)
+
+
+def sendEmail(to = settings.to, content = settings.content):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    # the email has to be with low security level
+    server.login(settings.your_email, settings.your_password) #configuration of the login and password
+    server.sendmail(settings.your_email, to, content) #configuration of the message of the receiver and the content of the message
+    server.close()
+
+def screenshot(path_screenshot = settings.path_screenshot):
+    img = pyautogui.screenshot()
+    img.save(path_screenshot) #set the path of the image
+
+def cpu():
+    usage = str(psutil.cpu_percent())
+    return ('O uso da CPU está em'+ usage)
+
+def jokes_pt():
+    joke_en = pyjokes.get_joke() #get a random joke
+    print(joke_en) #print the joke on terminal
+    trans = Translator() 
+    joke_pt = trans.translate(joke_en, dest='pt').text  #translate the joke to portuguese
+    print(joke_pt)
+    return joke_pt
+
 
 def Answer():
     r = sr.Recognizer()
@@ -65,32 +89,3 @@ def Answer():
         return "None"
     return query
 
-def sendEmail(to, content):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.ehlo()
-    server.starttls()
-    # the email has to be with low security level
-    server.login(settings.your_email, settings.your_password) #configuration of the login and password
-    server.sendmail(settings.your_email, to, content) #configuration of the message of the receiver and the content of the message
-    server.close()
-
-def screenshot():
-    img = pyautogui.screenshot()
-    img.save(settings.save_image) #set the path of the image
-
-def cpu():
-    usage = str(psutil.cpu_percent())
-    speak('O uso da CPU está em'+ usage)
-
-def jokes():
-    joke_en = pyjokes.get_joke() #get a random joke
-    print(joke_en) #print the joke on terminal
-    trans = Translator() 
-    joke_pt = trans.translate(joke_en, dest='pt').text  #translate the joke to portuguese
-    print(joke_pt)
-    speak(joke_pt)
-
-def Introduction():
-    speak('Eu sou a Olga, sua assistente com inteligência artificial...')
-    speak('Fui projetada para otimizar as suas tarefas....')
-    speak('Deseja saber o que eu sou capaz de fazer?...')
