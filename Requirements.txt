@@ -31,11 +31,11 @@ import psutil #pip install pustil
 import pyjokes #pip install pyjokes (Para piadas)
 import operator
 import json
-import wolframalpha
+# import wolframalpha
 from urllib.request import urlopen
 import requests
 
 
-from contacts import contact #(para importar contatos)
+# from contacts import contact #(para importar contatos)
 
 import random
