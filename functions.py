@@ -1,47 +1,6 @@
-# Libraries used in this project
+import mod
 
-# Taking screenshots:
-from tracemalloc import take_snapshot
-
-# Translations of text:
-from gettext import translation
-from googletrans import Translator #pip install googletrans==4.0.0-rc1
-
-# For convert speech to text:
-import pyttsx3 #pip install pyttsx3 (lib to speaking)
-import speech_recognition as sr #pip install SpeechRecognition
-
-# Time 
-import datetime #lib to get the time of the OS
-import time
-
-import wikipedia #pip install wikipedia  
-import smtplib
-
-# Scrapping the web
-import webbrowser as wb
-import pywhatkit as kit
-
-# Control of the OS and computer
-import os
-import pyautogui #pip install pyautogui (Para Screenshot)
-import psutil #pip install pustil
-
-# To get data
-import pyjokes #pip install pyjokes (Para piadas)
-import operator
-import json
-# import wolframalpha
-from urllib.request import urlopen
-import requests
-
-import settings
-
-# from contacts import contact #(para importar contatos)
-
-import random
-
-engine = pyttsx3.init()
+engine = mod.pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 
@@ -51,8 +10,8 @@ def speak(audio):
     engine.runAndWait()
 
 def TakeCommand():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
+    r = mod.sr.Recognizer()
+    with mod.sr.Microphone() as source:
         print("Escutando...")
         r.adjust_for_ambient_noise(source) #noise reduction
         r.pause_threshold = settings.time_recognition #set the time of waiting for the answer until the recognition of the command
@@ -71,19 +30,19 @@ def TakeCommand():
     return query
 
 def get_time():
-    Time = datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
+    Time = mod.datetime.datetime.now().strftime('%Horas e %Minutos') #24hr
     #Time=datetime.datetime.now().strftime("%I:%M:%S") #12h
     speak('São {}'.format(Time))
 
 def get_date():
-    year = (datetime.datetime.now().year)
-    month = (datetime.datetime.now().month)
-    date = (datetime.datetime.now().day)
+    year = (mod.datetime.datetime.now().year)
+    month = (mod.datetime.datetime.now().month)
+    date = (mod.datetime.datetime.now().day)
     speak('São {} do {} de {}'.format(date, month, year))
 
 def wishme():
     #speak('Bem-vindo de volta Senhor!')
-    hour = datetime.datetime.now().hour
+    hour = mod.datetime.datetime.now().hour
     if hour >=6 and hour<12:
         speak("Bom dia. Como está se sentindo hoje?")
     elif hour >=12 and hour<18:
