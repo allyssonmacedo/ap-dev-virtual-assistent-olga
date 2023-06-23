@@ -35,7 +35,7 @@ import json
 from urllib.request import urlopen
 import requests
 
-import settings
+import settings as settings
 
 # from contacts import contact #(para importar contatos)
 

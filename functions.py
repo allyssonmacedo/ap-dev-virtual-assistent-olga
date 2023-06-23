@@ -1,4 +1,4 @@
-import mod
+import mod, os
 
 engine = mod.pyttsx3.init()
 voices = engine.getProperty('voices')
