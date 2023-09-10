@@ -21,7 +21,7 @@ def TakeCommand():
         query = r.recognize_google(audio, language= settings.portuguese).lower() #set the language of the recognition and use the google speech recognize
         if "olga" in query.lower():
             query = query.replace("olga", "")
-               #drop the word "olga" from the query
+            #drop the word "olga" from the query
         print(query)
         
     except Exception as e:
@@ -57,10 +57,10 @@ def wishme():
     # the email has to be with low security level
     #server.login(settings.your_email, settings.your_password) #configuration of the login and password
     #server.sendmail(settings.your_email, to, content) #configuration of the message of the receiver and the content of the message
-   # server.close()
+# server.close()
 
 ### def screenshot(path_screenshot = settings.path_screenshot):
-   #img = pyautogui.screenshot()
+#img = pyautogui.screenshot()
     #img.save(path_screenshot) #set the path of the image
 
 def cpu():
