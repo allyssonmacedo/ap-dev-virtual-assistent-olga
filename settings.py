@@ -1,5 +1,6 @@
 #set the time of waiting for the answer until the recognition of the command
-time_recognition = 0.5
+time_recognition = 0.75
+time_recognition2 = 0.5
 
 #Language settings:
 portuguese = "pt-br"

@@ -1,6 +1,7 @@
 import functions as func #importing Olga's functions
 import phrases #importing Phrases of Olga
 import pyttsx3 #pip install pyttsx3 (lib to speaking)
+import chatgpt
 
 
 #Configuration and initializing 
@@ -15,6 +16,10 @@ if __name__ == '__main__':
 
     while True:
         audio = func.TakeCommand()
+
+        if 'iniciar chat gpt' in audio:
+            while True:
+                chatgpt.CallChatGPT()
 
         if 'que horas são' in audio:
            func.get_time()
