@@ -22,7 +22,7 @@ if __name__ == '__main__':
                 chatgpt.CallChatGPT()
 
         if 'que horas são' in audio:
-           func.get_time()
+            func.get_time()
 
         elif 'que dia é hoje' in audio:
             func.get_date()
